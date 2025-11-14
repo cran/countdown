@@ -3,6 +3,7 @@
 \name{countdown}
 \alias{countdown}
 \alias{countdown_fullscreen}
+\alias{countdown_style}
 \title{Countdown Timer}
 \usage{
 countdown(
@@ -13,9 +14,6 @@ countdown(
   class = NULL,
   style = NULL,
   play_sound = FALSE,
-  font_size = "3rem",
-  margin = "0.6em",
-  padding = "10px 15px",
   bottom = if (is.null(top)) "0",
   right = if (is.null(left)) "0",
   top = NULL,
@@ -24,21 +22,24 @@ countdown(
   update_every = 1L,
   blink_colon = update_every > 1L,
   start_immediately = FALSE,
-  box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
-  border_width = "3px",
-  border_radius = "15px",
-  line_height = "1",
-  color_border = "#ddd",
-  color_background = "inherit",
-  color_text = "inherit",
-  color_running_background = "#43AC6A",
-  color_running_border = prismatic::clr_darken(color_running_background, 0.1),
+  font_size = NULL,
+  margin = NULL,
+  padding = NULL,
+  box_shadow = NULL,
+  border_width = NULL,
+  border_radius = NULL,
+  line_height = NULL,
+  color_border = NULL,
+  color_background = NULL,
+  color_text = NULL,
+  color_running_background = NULL,
+  color_running_border = NULL,
   color_running_text = NULL,
-  color_finished_background = "#F04124",
-  color_finished_border = prismatic::clr_darken(color_finished_background, 0.1),
+  color_finished_background = NULL,
+  color_finished_border = NULL,
   color_finished_text = NULL,
-  color_warning_background = "#E6C229",
-  color_warning_border = prismatic::clr_darken(color_warning_background, 0.1),
+  color_warning_background = NULL,
+  color_warning_border = NULL,
   color_warning_text = NULL
 )
 
@@ -57,6 +58,29 @@ countdown_fullscreen(
   right = 0,
   bottom = 0,
   left = 0
+)
+
+countdown_style(
+  font_size = "3rem",
+  margin = "0.6em",
+  padding = "10px 15px",
+  box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
+  border_width = "0.1875 rem",
+  border_radius = "0.9rem",
+  line_height = "1",
+  color_border = "#ddd",
+  color_background = "inherit",
+  color_text = "inherit",
+  color_running_background = "#43AC6A",
+  color_running_border = prismatic::clr_darken(color_running_background, 0.1),
+  color_running_text = NULL,
+  color_finished_background = "#F04124",
+  color_finished_border = prismatic::clr_darken(color_finished_background, 0.1),
+  color_finished_text = NULL,
+  color_warning_background = "#E6C229",
+  color_warning_border = prismatic::clr_darken(color_warning_background, 0.1),
+  color_warning_text = NULL,
+  .selector = ":root"
 )
 }
 \arguments{
@@ -77,7 +101,14 @@ specific reason, it would probably be best to leave this unset.}
 \item{class}{Optional additional classes to be added to the \verb{<div>}
 containing the timer. The \code{"countdown"} class is added automatically. If
 you want to modify the style of the timer, you can modify the \code{"countdown"}
-class or specify additional styles here that extend the base CSS.}
+class or specify additional styles here that extend the base CSS.
+
+\code{countdown()} provides two built-in classes:
+\itemize{
+\item Use \code{"inline"} to create an inline, rather than absolutely-positioned,
+timer. This is useful for timers in prose or documents.
+\item Use \code{"no-controls"} for a timer without the up/down controls.
+}}
 
 \item{style}{CSS rules to be applied inline to the timer. Use \code{style} to
 override any global CSS rules for the timer. For example, to display the
@@ -88,14 +119,11 @@ absolutely, as in the default), set
 \item{play_sound}{Play a sound at the end of the timer? If \code{TRUE}, plays the
 "stage complete" sound courtesy of \link[beepr:beepr-package]{beepr}.
 Alternatively, \code{play_sound} can be a relative or absolute URL to a sound
-file, such as an \code{mp3}, \code{wav}, \code{ogg}, or other audio file type.}
-
-\item{font_size}{The font size of the time displayed in the timer.}
-
-\item{margin}{The margin applied to the timer container, default is
-\code{"0.5em"}.}
-
-\item{padding}{The padding within the timer container, default is \code{"10px 15px"}.}
+file, such as an \code{mp3}, \code{wav}, \code{ogg}, or other audio file type.
+Custom sounds are only played when \code{countdown} is used on a webpage or
+Shiny app; however, they do not work in an interactive context (creating
+a \code{countdown} in console) due to JavaScript limitations in accessing
+local files.}
 
 \item{bottom}{Position of the timer within its container. By default the
 timer is bottom-aligned using \code{bottom = "0"}. If \code{top} is set, \code{bottom}
@@ -130,6 +158,13 @@ the countdown time is updated periodically rather than each second.}
 
 \item{start_immediately}{If \code{TRUE}, the countdown timer starts as soon as its
 created (or as soon as the slides, document or Shiny app are loaded).}
+
+\item{font_size}{The font size of the time displayed in the timer.}
+
+\item{margin}{The margin applied to the timer container, default is
+\code{"0.5em"}.}
+
+\item{padding}{The padding within the timer container, default is \code{"10px 15px"}.}
 
 \item{box_shadow}{Shadow specification for the timer, set to \code{NULL} to remove
 the shadow.}
@@ -176,6 +211,10 @@ warning timer border and text (\code{color_warning_border} and
 
 \item{color_warning_text}{Color of the timer text when the timer is below
 \code{warn_when} seconds.}
+
+\item{.selector}{In \code{countdown_style()}: the CSS selector to which the styles
+should be applied. The default is \verb{:root} for global styles, but you can
+also provide a custom class name to create styles for a particular class.}
 }
 \value{
 A vanilla JavaScript countdown timer as HTML, with dependencies.
@@ -192,6 +231,10 @@ HTML documents.
 
 \item \code{countdown_fullscreen()}: A full-screen timer that takes up the entire view port
 and uses the largest reasonable font size.
+
+\item \code{countdown_style()}: Set global default countdown timer styles using CSS.
+Use this function to globally style all countdown timers in a document or
+app. Individual timers can still be customized.
 
 }}
 \examples{

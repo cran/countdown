@@ -6,7 +6,7 @@
 [![R-CMD-check](https://github.com/gadenbuie/countdown/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/gadenbuie/countdown/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-**countdown** makes it easy to drop in a simple countdown timer in slides and HTML documents written in R Markdown.
+**countdown** makes it easy to drop in a simple countdown timer in slides and HTML documents written in [Quarto](https://quarto.org) or [R Markdown](https://rmarkdown.rstudio.com).
 
 ``` r
 library(countdown)
@@ -22,16 +22,33 @@ Check out countdown in its native environment in the [countdown presentation](ht
 
 ## Installation
 
-You can install countdown from GitHub with:
+You can install countdown from CRAN
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("gadenbuie/countdown")
+install.packages("countdown")
+```
+
+or you can install the development version of countdown from [gadenbuie.r-universe.dev](https://gadenbuie.r-universe.dev/countdown)
+
+``` r
+options(repos = c(
+  gadenbuie = 'https://gadenbuie.r-universe.dev',
+  getOption("repos")
+))
+
+install.packages('countdown')
+```
+
+or from GitHub
+
+``` r
+# install.packages("remotes")
+remotes::install_github("gadenbuie/countdown", subdir = "r")
 ```
 
 ## Shiny App
 
-**countdown** ships with a [Shiny app](https://shiny.rstudio.com) for an interactive _full-screen countdown timer_!
+**countdown** ships with a [Shiny app](https://shiny.posit.co) for an interactive _full-screen countdown timer_!
 
 To launch the app, run
 

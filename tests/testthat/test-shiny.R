@@ -4,16 +4,13 @@ describe("countdown_app()", {
   local_edition(2)
 
   it("errors if shiny not available", {
-    with_mock(
-      requireNamespace = function(...) FALSE,
-      expect_error(countdown_app())
+    local_mocked_bindings(
+      has_shiny = function(...) FALSE
     )
   })
-
 })
 
 describe("parse_mmmss()", {
-
   it("parses MM and MM:SS", {
     expect_time <- function(object, time) {
       time <- list(minutes = time[1], seconds = time[2])
@@ -38,6 +35,4 @@ describe("parse_mmmss()", {
     expect_parse_error("0500")
     expect_parse_error("111")
   })
-
 })
-
